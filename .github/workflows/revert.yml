@@ -48,8 +48,11 @@ jobs:
     if: ${{ !inputs.enforce_main || github.ref == 'refs/heads/main' }}
     steps:
       - name: Check branch condition
+        env:
+          ENFORCE_MAIN: ${{ inputs.enforce_main }}
+          GITHUB_REF: ${{ github.ref }}
         run: |
-          if [[ "${{ inputs.enforce_main }}" == "true" && "${{ github.ref }}" != "refs/heads/main" ]]; then
+          if [[ "$ENFORCE_MAIN" == "true" && "$GITHUB_REF" != "refs/heads/main" ]]; then
             echo "Reverts are only allowed from the main branch"
             exit 1
           fi
